@@ -4,8 +4,8 @@ Donate link: http://coffee2code.com/donate
 Tags: user, custom field, user meta, widget, shortcode, coffee2code
 Requires at least: 2.6
 Tested up to: 3.2
-Stable tag: 2.5
-Version: 2.5
+Stable tag: 2.5.1
+Version: 2.5.1
 
 Easily retrieve and control the display of any custom field values/meta data for the currently logged in user or any specified user.
 
@@ -230,6 +230,11 @@ Examples:
 
 == Changelog ==
 
+= 2.5.1 =
+* Fix fatal shortcode bug by updating widget framework to v005 to make a protected class variable public
+* Return immediately in c2c_get_user_custom() if value of $field is empty string
+* Update widget version to 003
+
 = 2.5 =
 * Use get_user_meta() if defined (WP3.0+), rather than direct SQL query
 * Use real functions rather than create_function() to register widget and shortcode
@@ -277,6 +282,9 @@ Examples:
 
 
 == Upgrade Notice ==
+
+= 2.5.1 =
+Critical bugfix release (if using shortcode): fixed fatal shortcode bug; minor change to bail out of processing if an empty string is passed a custom field key name
 
 = 2.5 =
 Recommended update. Highlights: re-implemented widget based on custom widget framework; localized text; noted compatibility through WP 3.2+; and more.

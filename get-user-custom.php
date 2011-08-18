@@ -2,11 +2,11 @@
 /**
  * @package Get_User_Custom_Field_Values
  * @author Scott Reilly
- * @version 2.5
+ * @version 2.5.1
  */
 /*
 Plugin Name: Get User Custom Field Values
-Version: 2.5
+Version: 2.5.1
 Plugin URI: http://coffee2code.com/wp-plugins/get-user-custom-field-values/
 Author: Scott Reilly
 Author URI: http://coffee2code.com
@@ -128,6 +128,9 @@ if ( ! function_exists( 'c2c_get_user_custom' ) ) :
  */
 function c2c_get_user_custom( $user_id, $field, $before='', $after='', $none='', $between='', $before_last='' ) {
 	global $wpdb;
+
+	if ( empty( $field ) )
+		return;
 
 	$values = array();
 	$meta_values = function_exists( 'get_user_meta' ) ?
