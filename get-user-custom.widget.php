@@ -2,7 +2,7 @@
 /**
  * @package c2c_GetUserCustomWidget
  * @author Scott Reilly
- * @version 003
+ * @version 004
  */
 /*
  * Get User Custom Field Values plugin widget code
@@ -80,10 +80,10 @@ class c2c_GetUserCustomWidget extends C2C_Widget_005 {
 		extract( $settings );
 
 		// Determine, based on inputs given, which template tag to use.
-		if ( '0' === $user_id || $this_post )
+		if ( 0 === $user_id || $this_post )
 			$user_id = 'current';
 
-		if ( $user_id ) {
+		if ( ! empty( $user_id ) ) {
 			if ( 'current' == $user_id )
 				echo c2c_get_author_custom( $field, $before_title . $title . $after_title . $before, $after . $after_widget, $none, $between, $before_last );
 			else
@@ -100,7 +100,10 @@ class c2c_GetUserCustomWidget extends C2C_Widget_005 {
 	 * @return array The filtered array of widget instance values
 	 */
 	function validate( $instance ) {
-		$instance['field'] = trim( $instance['field'] );
+		$instance['field']   = trim( $instance['field'] );
+		$instance['user_id'] = trim( $instance['user_id'] );
+		if ( ! empty( $instance['user_id'] ) )
+			$instance['user_id'] = intval( $instance['user_id'] );
 		return $instance;
 	}
 

@@ -3,9 +3,9 @@ Contributors: coffee2code
 Donate link: http://coffee2code.com/donate
 Tags: user, custom field, user meta, widget, shortcode, coffee2code
 Requires at least: 2.6
-Tested up to: 3.2
-Stable tag: 2.5.1
-Version: 2.5.1
+Tested up to: 3.3.1
+Stable tag: 2.6
+Version: 2.6
 
 Easily retrieve and control the display of any custom field values/meta data for the currently logged in user or any specified user.
 
@@ -30,7 +30,7 @@ The list of useful user custom field values that are provided by default in Word
 
 It is up to other plugins or custom code to add additional user custom fields that you may then be able to retrieve with this plugin.
 
-Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/get-user-custom-field-values/) | [Author Homepage](http://coffee2code.com)
+Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/get-user-custom-field-values/) | [Plugin Directory Page](http://wordpress.org/extend/plugins/get-user-custom-field-values/) | [Author Homepage](http://coffee2code.com)
 
 
 == Screenshots ==
@@ -120,7 +120,7 @@ optional) The text to display between the next-to-last and last items listed whe
 
 == Filters ==
 
-The plugin exposes four filters for hooking.  Typically, customizations utilizing these hooks would be put into your active theme's functions.php file, or used by another plugin.
+The plugin exposes five filters for hooking.  Typically, customizations utilizing these hooks would be put into your active theme's functions.php file, or used by another plugin.
 
 = c2c_get_current_user_custom (filter) =
 
@@ -194,6 +194,21 @@ function change_c2c_get_user_custom_field_values_shortcode( $shortcode ) {
 }
 `
 
+= c2c_get_user_custom-user_field_proxy (filter) =
+
+The 'c2c_get_user_custom-user_field_proxy' hook allows you to prevent proxying to user object fields if no custom value for the custom field was found for the user. By default, if a user does not have a value for the given custom field, the plugin will compare the field name to the small list of user object fields (i.e. user table fields) to see if it is a valid user field. If so, then the user field value (as opposed to custom field value) is returned.
+
+Arguments:
+
+* $allow_proxy (boolean) Default of true.
+
+Example:
+
+`
+// Prevent user field proxying: i.e. this would not return anything: [user_custom_field field="user_email" user_id="1" /]
+add_filter( 'c2c_get_user_custom-user_field_proxy', '__return_false' );
+`
+
 
 == Shortcode ==
 
@@ -229,6 +244,14 @@ Examples:
 
 
 == Changelog ==
+
+= 2.6 =
+* Attempt to return user object field value if no custom fields values found and field name matches user object field name
+* Add filter 'c2c_get_user_custom-user_field_proxy' to prevent accessing user object fields
+* Trim user inputs for widget (and intval user_id) during validation
+* Note compatibility through WP 3.3
+* Add link to plugin directory page to readme.txt
+* Update copyright date (2012)
 
 = 2.5.1 =
 * Fix fatal shortcode bug by updating widget framework to v005 to make a protected class variable public
@@ -282,6 +305,9 @@ Examples:
 
 
 == Upgrade Notice ==
+
+= 2.6 =
+Recommended update. Highlights: allow shortcode to return user fields (not just custom fields); noted compatibility through WP 3.3+; and more.
 
 = 2.5.1 =
 Critical bugfix release (if using shortcode): fixed fatal shortcode bug; minor change to bail out of processing if an empty string is passed a custom field key name

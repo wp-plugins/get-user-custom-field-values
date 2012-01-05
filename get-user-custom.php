@@ -2,17 +2,17 @@
 /**
  * @package Get_User_Custom_Field_Values
  * @author Scott Reilly
- * @version 2.5.1
+ * @version 2.6
  */
 /*
 Plugin Name: Get User Custom Field Values
-Version: 2.5.1
+Version: 2.6
 Plugin URI: http://coffee2code.com/wp-plugins/get-user-custom-field-values/
 Author: Scott Reilly
-Author URI: http://coffee2code.com
+Author URI: http://coffee2code.com/
 Description: Easily retrieve and control the display of any custom field values/meta data for the currently logged in user or any specified user.
 
-Compatible with WordPress 2.8+, 2.9+, 3.0+, 3.1+, 3.2+.
+Compatible with WordPress 2.8+, 2.9+, 3.0+, 3.1+, 3.2+, 3.3+.
 
 =>> Read the accompanying readme.txt file for instructions and documentation.
 =>> Also, visit the plugin's homepage for additional information and updates.
@@ -44,7 +44,7 @@ TODO
 */
 
 /*
-Copyright (c) 2006-2011 by Scott Reilly (aka coffee2code)
+Copyright (c) 2006-2012 by Scott Reilly (aka coffee2code)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
 files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy,
@@ -136,6 +136,14 @@ function c2c_get_user_custom( $user_id, $field, $before='', $after='', $none='',
 	$meta_values = function_exists( 'get_user_meta' ) ?
 		get_user_meta( $user_id, $field ) :
 		$wpdb->get_col( $wpdb->prepare( "SELECT meta_value FROM $wpdb->usermeta WHERE user_id = %d AND meta_key = %s", $user_id, $field ) );
+
+	// If no value was found, consider checking the user object itself.
+	$user_fields = array( 'display_name', 'user_email', 'user_login', 'user_nicename', 'user_registered', 'user_url' );
+	if ( empty( $meta_values ) && in_array( $field, $user_fields ) && apply_filters( 'c2c_get_user_custom-user_field_proxy', true, $field ) ) {
+		if ( $user = get_userdata( $user_id ) ) {
+			$meta_values = array( $user->$field );
+		}
+	}
 
 	if ( empty( $between ) )
 		$meta_values = array_slice( $meta_values, 0, 1 );
