@@ -2,11 +2,14 @@
 /*
  * Get User Custom Field Values plugin shortcode code
  *
- * Copyright (c) 2004-2011 by Scott Reilly (aka coffee2code)
+ * Copyright (c) 2004-2012 by Scott Reilly (aka coffee2code)
  *
  */
 
+defined( 'ABSPATH' ) or die();
+
 if ( ! class_exists( 'c2c_GetUserCustomFieldValuesShortcode' ) && class_exists( 'c2c_GetUserCustomWidget' ) ) :
+
 class c2c_GetUserCustomFieldValuesShortcode {
 	var $name = 'shortcode_get_user_custom_field_values';
 	var $shortcode = 'user_custom_field';
@@ -20,9 +23,9 @@ class c2c_GetUserCustomFieldValuesShortcode {
 		$this->widget_base = 'widget-' . $this->widget_handler->id_base;
 		$this->shortcode = apply_filters( 'c2c_get_user_custom_field_values_shortcode', $this->shortcode );
 
-		add_shortcode( $this->shortcode, array( &$this, 'shortcode' ) );
-		add_action( 'admin_menu',        array( &$this, 'admin_menu' ) );
-		add_action( 'admin_footer',      array( &$this, 'admin_js' ) );
+		add_shortcode( $this->shortcode, array( $this, 'shortcode' ) );
+		add_action( 'admin_menu',        array( $this, 'admin_menu' ) );
+		add_action( 'admin_footer',      array( $this, 'admin_js' ) );
 	}
 
 	function shortcode( $atts, $content = null ) {
@@ -49,8 +52,8 @@ class c2c_GetUserCustomFieldValuesShortcode {
 	}
 
 	function admin_menu() {
-		add_meta_box( $this->name, $this->title, array( &$this, 'form' ), 'post', 'side' );
-		add_meta_box( $this->name, $this->title, array( &$this, 'form' ), 'page', 'side' );
+		add_meta_box( $this->name, $this->title, array( $this, 'form' ), 'post', 'side' );
+		add_meta_box( $this->name, $this->title, array( $this, 'form' ), 'page', 'side' );
 	}
 
 	function admin_js() {
@@ -119,4 +122,3 @@ function register_c2c_GetUserCustomFieldValuesShortcode() {
 add_action( 'init', 'register_c2c_GetUserCustomFieldValuesShortcode', 11 );
 
 endif; // end if !class_exists()
-?>

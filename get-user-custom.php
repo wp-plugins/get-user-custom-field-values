@@ -2,17 +2,20 @@
 /**
  * @package Get_User_Custom_Field_Values
  * @author Scott Reilly
- * @version 2.6
+ * @version 2.7
  */
 /*
 Plugin Name: Get User Custom Field Values
-Version: 2.6
+Version: 2.7
 Plugin URI: http://coffee2code.com/wp-plugins/get-user-custom-field-values/
 Author: Scott Reilly
 Author URI: http://coffee2code.com/
+Domain Path: /lang/
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Description: Easily retrieve and control the display of any custom field values/meta data for the currently logged in user or any specified user.
 
-Compatible with WordPress 2.8+, 2.9+, 3.0+, 3.1+, 3.2+, 3.3+.
+Compatible with WordPress 2.8+ through 3.5+.
 
 =>> Read the accompanying readme.txt file for instructions and documentation.
 =>> Also, visit the plugin's homepage for additional information and updates.
@@ -44,20 +47,24 @@ TODO
 */
 
 /*
-Copyright (c) 2006-2012 by Scott Reilly (aka coffee2code)
+	Copyright (c) 2006-2013 by Scott Reilly (aka coffee2code)
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy,
-modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following conditions:
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
-IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
+
+defined( 'ABSPATH' ) or die();
 
 include( dirname( __FILE__ ) . '/get-user-custom.widget.php' );
 include( dirname( __FILE__ ) . '/get-user-custom.shortcode.php' );
@@ -133,7 +140,7 @@ function c2c_get_user_custom( $user_id, $field, $before='', $after='', $none='',
 		return;
 
 	$values = array();
-	$meta_values = function_exists( 'get_user_meta' ) ?
+	$meta_values = function_exists( 'get_user_meta' ) ? // This check is only for WP < 3.0 compat
 		get_user_meta( $user_id, $field ) :
 		$wpdb->get_col( $wpdb->prepare( "SELECT meta_value FROM $wpdb->usermeta WHERE user_id = %d AND meta_key = %s", $user_id, $field ) );
 
@@ -193,5 +200,3 @@ endif;
 //add_filter('the_user_meta', 'c2c_hyperlink_urls', 9);
 //add_filter('the_user_meta', 'text_replace', 2);
 //add_filter('the_user_meta', 'textile', 6);
-
-?>

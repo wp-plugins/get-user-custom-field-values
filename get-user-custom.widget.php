@@ -2,27 +2,29 @@
 /**
  * @package c2c_GetUserCustomWidget
  * @author Scott Reilly
- * @version 004
+ * @version 005
  */
 /*
  * Get User Custom Field Values plugin widget code
  *
- * Copyright (c) 2004-2011 by Scott Reilly (aka coffee2code)
+ * Copyright (c) 2004-2013 by Scott Reilly (aka coffee2code)
  *
  */
+
+defined( 'ABSPATH' ) or die();
 
 if ( ! class_exists( 'c2c_GetUserCustomWidget' ) ) :
 
 require_once( 'c2c-widget.php' );
 
-class c2c_GetUserCustomWidget extends C2C_Widget_005 {
+class c2c_GetUserCustomWidget extends C2C_Widget_007 {
 
 	/**
 	 * Constructor
 	 */
 	function c2c_GetUserCustomWidget() {
-		$this->C2C_Widget_005( 'get-user-custom', __FILE__, array( 'width' => 300 ) );
-		add_filter( $this->get_hook( 'excluded_form_options' ), array( &$this, 'excluded_form_options' ) );
+		parent::__construct( 'get-user-custom', __FILE__, array( 'width' => 300 ) );
+		add_filter( $this->get_hook( 'excluded_form_options' ), array( $this, 'excluded_form_options' ) );
 	}
 
 	/**
@@ -127,4 +129,3 @@ function register_c2c_GetUserCustomWidget() {
 add_action( 'widgets_init', 'register_c2c_GetUserCustomWidget' );
 
 endif; // end if !class_exists()
-?>
