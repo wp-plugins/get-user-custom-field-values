@@ -2,17 +2,20 @@
 /**
  * @package C2C_Widget
  * @author Scott Reilly
- * @version 005
+ * @version 007
  */
 /*
  * C2C_Widget widget code
  *
- * Copyright (c) 2010-2011 by Scott Reilly (aka coffee2code)
+ * Copyright (c) 2010-2013 by Scott Reilly (aka coffee2code)
  *
  */
 
-if ( class_exists( 'WP_Widget' ) && ! class_exists( 'C2C_Widget_005' ) ) :
-class C2C_Widget_005 extends WP_Widget {
+defined( 'ABSPATH' ) or die();
+
+if ( class_exists( 'WP_Widget' ) && ! class_exists( 'C2C_Widget_007' ) ) :
+
+class C2C_Widget_007 extends WP_Widget {
 
 	public $config         = array();
 
@@ -32,7 +35,7 @@ class C2C_Widget_005 extends WP_Widget {
 	 * @param array $control_ops Array of options to control appearance of widget: width, height, id_base
 	 * @param string $textdomain Textdomain; leave as null to set it as same value as $widget_id
 	 */
-	public function C2C_Widget_005( $widget_id, $widget_file, $control_ops = array(), $textdomain = null ) {
+	public function __construct( $widget_id, $widget_file, $control_ops = array(), $textdomain = null ) {
 		$this->widget_id = $widget_id;
 		$this->widget_file = $widget_file;
 		if ( ! $textdomain )
@@ -75,17 +78,24 @@ class C2C_Widget_005 extends WP_Widget {
 
 		/* Settings */
 		$settings = array();
-		foreach ( array_keys( $this->config ) as $key )
+		foreach ( array_keys( $this->config ) as $key ) {
+			// Check for existence since key may be newly introduced since widget was last saved.
+			if ( ! isset( $instance[$key] ) )
+				$instance[$key] = '';
 			$settings[$key] = apply_filters( $this->get_hook( 'config_item_'.$key ), $instance[$key], $this );
+		}
 		$title = $settings['title'];
 
-		echo $before_widget;
+		$body = trim( $this->widget_body( $args, $instance, $settings ) );
 
+		// If the widget is empty, don't output anything
+		if ( empty( $body ) )
+			return;
+
+		echo $before_widget;
 		if ( ! empty( $title ) )
 			echo $before_title . $title . $after_title;
-
-		$this->widget_body( $args, $instance, $settings );
-
+		echo $body;
 		echo $after_widget;
 	}
 
@@ -263,4 +273,3 @@ class C2C_Widget_005 extends WP_Widget {
 } // end class C2C_Widget
 
 endif; // end if !class_exists()
-?>
