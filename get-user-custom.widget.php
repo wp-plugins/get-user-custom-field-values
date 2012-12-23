@@ -2,27 +2,29 @@
 /**
  * @package c2c_GetUserCustomWidget
  * @author Scott Reilly
- * @version 004
+ * @version 006
  */
 /*
  * Get User Custom Field Values plugin widget code
  *
- * Copyright (c) 2004-2011 by Scott Reilly (aka coffee2code)
+ * Copyright (c) 2004-2013 by Scott Reilly (aka coffee2code)
  *
  */
+
+defined( 'ABSPATH' ) or die();
 
 if ( ! class_exists( 'c2c_GetUserCustomWidget' ) ) :
 
 require_once( 'c2c-widget.php' );
 
-class c2c_GetUserCustomWidget extends C2C_Widget_005 {
+class c2c_GetUserCustomWidget extends C2C_Widget_007 {
 
 	/**
 	 * Constructor
 	 */
 	function c2c_GetUserCustomWidget() {
-		$this->C2C_Widget_005( 'get-user-custom', __FILE__, array( 'width' => 300 ) );
-		add_filter( $this->get_hook( 'excluded_form_options' ), array( &$this, 'excluded_form_options' ) );
+		parent::__construct( 'get-user-custom', __FILE__, array( 'width' => 300 ) );
+		add_filter( $this->get_hook( 'excluded_form_options' ), array( $this, 'excluded_form_options' ) );
 	}
 
 	/**
@@ -79,18 +81,22 @@ class c2c_GetUserCustomWidget extends C2C_Widget_005 {
 		extract( $args );
 		extract( $settings );
 
+		$ret = '';
+
 		// Determine, based on inputs given, which template tag to use.
 		if ( 0 === $user_id || $this_post )
 			$user_id = 'current';
 
 		if ( ! empty( $user_id ) ) {
 			if ( 'current' == $user_id )
-				echo c2c_get_author_custom( $field, $before_title . $title . $after_title . $before, $after . $after_widget, $none, $between, $before_last );
+				$ret = c2c_get_author_custom( $field, $before_title . $title . $after_title . $before, $after . $after_widget, $none, $between, $before_last );
 			else
-				echo c2c_get_user_custom( $user_id, $field, $before, $after, $none, $between, $before_last );
+				$ret = c2c_get_user_custom( $user_id, $field, $before, $after, $none, $between, $before_last );
 		} else {
-			echo c2c_get_current_user_custom( $field, $before, $after, $none, $between, $before_last );
+			$ret = c2c_get_current_user_custom( $field, $before, $after, $none, $between, $before_last );
 		}
+
+		return $ret;
 	}
 
 	/**
@@ -127,4 +133,3 @@ function register_c2c_GetUserCustomWidget() {
 add_action( 'widgets_init', 'register_c2c_GetUserCustomWidget' );
 
 endif; // end if !class_exists()
-?>

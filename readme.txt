@@ -2,10 +2,12 @@
 Contributors: coffee2code
 Donate link: http://coffee2code.com/donate
 Tags: user, custom field, user meta, widget, shortcode, coffee2code
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 2.6
-Tested up to: 3.3.1
-Stable tag: 2.6
-Version: 2.6
+Tested up to: 3.5
+Stable tag: 2.7.1
+Version: 2.7.1
 
 Easily retrieve and control the display of any custom field values/meta data for the currently logged in user or any specified user.
 
@@ -245,6 +247,24 @@ Examples:
 
 == Changelog ==
 
+= 2.7.1 =
+* Change widget_body() to return widget content instead of echoing it, to fix widget display
+* Update widget version to 006
+
+= 2.7 =
+* Add check to prevent execution of code if file is directly accessed
+* Update widget version to 005
+* Update widget framework to 007
+    * Prevent output of anything if there is no widget_body() output
+* Re-license as GPLv2 or later (from X11)
+* Add 'License' and 'License URI' header tags to readme.txt and plugin file
+* Add 'Domain Path' directive to top of main plugin file
+* Discontinue use of explicit pass-by-reference for objects
+* Remove ending PHP close tag
+* Note compatibility through WP 3.5+
+* Update copyright date (2013)
+* Move screenshots into repo's assets directory
+
 = 2.6 =
 * Attempt to return user object field value if no custom fields values found and field name matches user object field name
 * Add filter 'c2c_get_user_custom-user_field_proxy' to prevent accessing user object fields
@@ -305,6 +325,12 @@ Examples:
 
 
 == Upgrade Notice ==
+
+= 2.7.1 =
+Bug fix update: fix to properly output markup for widget
+
+= 2.7 =
+Trivial update: noted compatibility through WP 3.5+; explicitly stated license
 
 = 2.6 =
 Recommended update. Highlights: allow shortcode to return user fields (not just custom fields); noted compatibility through WP 3.3+; and more.
