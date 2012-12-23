@@ -6,8 +6,8 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 2.6
 Tested up to: 3.5
-Stable tag: 2.7
-Version: 2.7
+Stable tag: 2.7.1
+Version: 2.7.1
 
 Easily retrieve and control the display of any custom field values/meta data for the currently logged in user or any specified user.
 
@@ -247,6 +247,10 @@ Examples:
 
 == Changelog ==
 
+= 2.7.1 =
+* Change widget_body() to return widget content instead of echoing it, to fix widget display
+* Update widget version to 006
+
 = 2.7 =
 * Add check to prevent execution of code if file is directly accessed
 * Update widget version to 005
@@ -321,6 +325,9 @@ Examples:
 
 
 == Upgrade Notice ==
+
+= 2.7.1 =
+Bug fix update: fix to properly output markup for widget
 
 = 2.7 =
 Trivial update: noted compatibility through WP 3.5+; explicitly stated license

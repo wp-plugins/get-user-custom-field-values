@@ -2,11 +2,11 @@
 /**
  * @package Get_User_Custom_Field_Values
  * @author Scott Reilly
- * @version 2.7
+ * @version 2.7.1
  */
 /*
 Plugin Name: Get User Custom Field Values
-Version: 2.7
+Version: 2.7.1
 Plugin URI: http://coffee2code.com/wp-plugins/get-user-custom-field-values/
 Author: Scott Reilly
 Author URI: http://coffee2code.com/
