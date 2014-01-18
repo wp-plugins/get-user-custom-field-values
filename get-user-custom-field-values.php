@@ -2,11 +2,11 @@
 /**
  * @package Get_User_Custom_Field_Values
  * @author Scott Reilly
- * @version 2.7.1
+ * @version 2.8
  */
 /*
 Plugin Name: Get User Custom Field Values
-Version: 2.7.1
+Version: 2.8
 Plugin URI: http://coffee2code.com/wp-plugins/get-user-custom-field-values/
 Author: Scott Reilly
 Author URI: http://coffee2code.com/
@@ -15,11 +15,11 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Description: Easily retrieve and control the display of any custom field values/meta data for the currently logged in user or any specified user.
 
-Compatible with WordPress 2.8+ through 3.5+.
+Compatible with WordPress 3.6+ through 3.8+.
 
 =>> Read the accompanying readme.txt file for instructions and documentation.
 =>> Also, visit the plugin's homepage for additional information and updates.
-=>> Or visit: http://wordpress.org/extend/plugins/get-user-custom-field-values/
+=>> Or visit: http://wordpress.org/plugins/get-user-custom-field-values/
 
 TODO
 	* Create hooks to allow disabling shortcode, shortcode builder, and widget support
@@ -47,7 +47,7 @@ TODO
 */
 
 /*
-	Copyright (c) 2006-2013 by Scott Reilly (aka coffee2code)
+	Copyright (c) 2006-2014 by Scott Reilly (aka coffee2code)
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -56,7 +56,7 @@ TODO
 
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
@@ -72,6 +72,7 @@ include( dirname( __FILE__ ) . '/get-user-custom.shortcode.php' );
 if ( ! function_exists( 'c2c_get_current_user_custom' ) ):
 /**
  * Access custom fields for the currently logged in user.
+ *
  * If the current visitor is NOT logged in, then the $none value is returned.
  *
  * @param string $field The name/key value of the custom field
@@ -93,56 +94,58 @@ function c2c_get_current_user_custom( $field, $before='', $after='', $none='', $
 add_filter( 'c2c_get_current_user_custom', 'c2c_get_current_user_custom', 10, 6 );
 endif;
 
+
 if ( ! function_exists( 'c2c_get_author_custom' ) ) :
 /**
  * Access custom fields for the current author (when on the permalink page for a post, page, or in a loop),
  *
- * @param string $field The name/key value of the custom field
- * @param string $before (optional) Text to appear before all the custom field value(s) if a value exists. Default is ''.
- * @param string $after (optional) Text to appear after all the custom field value if a value(s) exists. Default is ''.
- * @param string $none (optional) 	The text to display in place of the field value should no field value exists; if defined
- *               as '' and no field value exists, then nothing (including no $before and $after) gets displayed.  Default is ''.
- * @param string $between (optional) 	The text to display between multiple occurrences of the custom field; if defined as '',
- *               then only the first instance will be used.  Default is ''.
- * @param string $before_last (optional) The text to display between the next-to-last and last items listed when multiple occurrences of
- *               the custom field exist; $between MUST be set to something other than '' for this to take effect.  Default is ''.
+ * @param  string $field       The name/key value of the custom field
+ * @param  string $before      (optional) Text to appear before all the custom field value(s) if a value exists. Default is ''.
+ * @param  string $after       (optional) Text to appear after all the custom field value if a value(s) exists. Default is ''.
+ * @param  string $none        (optional) The text to display in place of the field value should no field value exists; if defined
+ *                as '' and no field value exists, then nothing (including no $before and $after) gets displayed.  Default is ''.
+ * @param  string $between     (optional) The text to display between multiple occurrences of the custom field; if defined as '',
+ *                then only the first instance will be used.  Default is ''.
+ * @param  string $before_last (optional) The text to display between the next-to-last and last items listed when multiple occurrences of
+ *                the custom field exist; $between MUST be set to something other than '' for this to take effect.  Default is ''.
  * @return string The value for the specified custom field
  */
 function c2c_get_author_custom( $field, $before='', $after='', $none='', $between='', $before_last='' ) {
 	global $authordata;
 
-	if ( is_single() || is_page() || in_the_loop() )
+	if ( is_single() || is_page() || in_the_loop() ) {
 		return c2c_get_user_custom( ( isset( $authordata->ID ) ? (int) $authordata->ID : 0 ), $field, $before, $after, $none, $between, $before_last );
+	}
 }
 add_filter( 'c2c_get_author_custom', 'c2c_get_author_custom', 10, 6 );
 endif;
+
 
 if ( ! function_exists( 'c2c_get_user_custom' ) ) :
 /**
  * Access custom fields for any user specified by the $user_id value.
  *
- * @param int $user_id The user ID
- * @param string $field The name/key value of the custom field
- * @param string $before (optional) Text to appear before all the custom field value(s) if a value exists. Default is ''.
- * @param string $after (optional) Text to appear after all the custom field value if a value(s) exists. Default is ''.
- * @param string $none (optional) 	The text to display in place of the field value should no field value exists; if defined
- *               as '' and no field value exists, then nothing (including no $before and $after) gets displayed.  Default is ''.
- * @param string $between (optional) 	The text to display between multiple occurrences of the custom field; if defined as '',
- *               then only the first instance will be used.  Default is ''.
- * @param string $before_last (optional) The text to display between the next-to-last and last items listed when multiple occurrences of
- *               the custom field exist; $between MUST be set to something other than '' for this to take effect.  Default is ''.
+ * @param  int    $user_id The user ID
+ * @param  string $field The name/key value of the custom field
+ * @param  string $before (optional) Text to appear before all the custom field value(s) if a value exists. Default is ''.
+ * @param  string $after (optional) Text to appear after all the custom field value if a value(s) exists. Default is ''.
+ * @param  string $none (optional) 	The text to display in place of the field value should no field value exists; if defined
+ *                as '' and no field value exists, then nothing (including no $before and $after) gets displayed.  Default is ''.
+ * @param  string $between (optional) 	The text to display between multiple occurrences of the custom field; if defined as '',
+ *                then only the first instance will be used.  Default is ''.
+ * @param  string $before_last (optional) The text to display between the next-to-last and last items listed when multiple occurrences of
+ *                the custom field exist; $between MUST be set to something other than '' for this to take effect.  Default is ''.
  * @return string The value for the specified custom field
  */
 function c2c_get_user_custom( $user_id, $field, $before='', $after='', $none='', $between='', $before_last='' ) {
 	global $wpdb;
 
-	if ( empty( $field ) )
+	if ( empty( $field ) ) {
 		return;
+	}
 
-	$values = array();
-	$meta_values = function_exists( 'get_user_meta' ) ? // This check is only for WP < 3.0 compat
-		get_user_meta( $user_id, $field ) :
-		$wpdb->get_col( $wpdb->prepare( "SELECT meta_value FROM $wpdb->usermeta WHERE user_id = %d AND meta_key = %s", $user_id, $field ) );
+	$values      = array();
+	$meta_values = get_user_meta( $user_id, $field );
 
 	// If no value was found, consider checking the user object itself.
 	$user_fields = array( 'display_name', 'user_email', 'user_login', 'user_nicename', 'user_registered', 'user_url' );
@@ -152,14 +155,16 @@ function c2c_get_user_custom( $user_id, $field, $before='', $after='', $none='',
 		}
 	}
 
-	if ( empty( $between ) )
+	if ( empty( $between ) ) {
 		$meta_values = array_slice( $meta_values, 0, 1 );
+	}
 
-	if ( ! empty( $meta_values ) )
+	if ( ! empty( $meta_values ) ) {
 		foreach ( $meta_values as $meta ) {
-			$meta = apply_filters( "the_user_meta_$field", $meta );
+			$meta     = apply_filters( "the_user_meta_$field", $meta );
 			$values[] = apply_filters( 'the_user_meta', $meta );
 		}
+	}
 
 	if ( empty( $values ) ) {
 		$value = '';
@@ -176,14 +181,15 @@ function c2c_get_user_custom( $user_id, $field, $before='', $after='', $none='',
 					$value = $values[0] . $before_last . $values[1];
 					break;
 				default:
-					$value = implode( array_slice( $values, 0, $size-1 ), $between ) . $before_last . $values[$size-1];
+					$value = implode( array_slice( $values, 0, $size-1 ), $between ) . $before_last . $values[ $size-1 ];
 			}
 		}
 	}
 
 	if ( empty( $value ) ) {
-		if ( empty( $none ) )
+		if ( empty( $none ) ) {
 			return;
+		}
 		$value = $none;
 	}
 
