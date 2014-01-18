@@ -2,20 +2,20 @@
 /**
  * @package C2C_Widget
  * @author Scott Reilly
- * @version 007
+ * @version 008
  */
 /*
  * C2C_Widget widget code
  *
- * Copyright (c) 2010-2013 by Scott Reilly (aka coffee2code)
+ * Copyright (c) 2010-2014 by Scott Reilly (aka coffee2code)
  *
  */
 
 defined( 'ABSPATH' ) or die();
 
-if ( class_exists( 'WP_Widget' ) && ! class_exists( 'C2C_Widget_007' ) ) :
+if ( class_exists( 'WP_Widget' ) && ! class_exists( 'C2C_Widget_008' ) ) :
 
-class C2C_Widget_007 extends WP_Widget {
+class C2C_Widget_008 extends WP_Widget {
 
 	public $config         = array();
 
@@ -164,6 +164,7 @@ class C2C_Widget_007 extends WP_Widget {
 					$value = $new_value;
 				}
 			}
+
 			echo "<p>";
 			$input_id = $this->get_field_id( $opt );
 			$input_name = $this->get_field_name( $opt );

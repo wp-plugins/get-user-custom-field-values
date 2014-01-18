@@ -2,7 +2,7 @@
 /**
  * @package c2c_GetUserCustomWidget
  * @author Scott Reilly
- * @version 006
+ * @version 007
  */
 /*
  * Get User Custom Field Values plugin widget code
@@ -17,12 +17,12 @@ if ( ! class_exists( 'c2c_GetUserCustomWidget' ) ) :
 
 require_once( 'c2c-widget.php' );
 
-class c2c_GetUserCustomWidget extends C2C_Widget_007 {
+class c2c_GetUserCustomWidget extends C2C_Widget_008 {
 
 	/**
 	 * Constructor
 	 */
-	function c2c_GetUserCustomWidget() {
+	function __construct() {
 		parent::__construct( 'get-user-custom', __FILE__, array( 'width' => 300 ) );
 		add_filter( $this->get_hook( 'excluded_form_options' ), array( $this, 'excluded_form_options' ) );
 	}
@@ -65,7 +65,13 @@ class c2c_GetUserCustomWidget extends C2C_Widget_007 {
 					'help' => __( 'Text to display between custom field items if more than one are being shown.', $this->textdomain ) ),
 			'before_last' => array( 'input' => 'text', 'default' => '',
 					'label' => __( 'Before last text', $this->textdomain ),
-					'help' => __( 'Text to display between the second to last and last custom field items if more than one are being shown.', $this->textdomain ) )
+					'help' => __( 'Text to display between the second to last and last custom field items if more than one are being shown.', $this->textdomain ) ),
+			'id' => array( 'input' => 'text', 'default' => '',
+					'label' => __( 'HTML id', $this->textdomain ),
+					'help'  => __( 'The \'id\' attribute for the &lt;span&gt; tag to surrounds output.', $this->textdomain ) ),
+			'class' => array( 'input' => 'text', 'default' => '',
+					'label' => __( 'HTML class', $this->textdomain ),
+					'help'  => __( 'The \'class\' attribute for the &lt;span&gt; tag to surrounds output.', $this->textdomain ) ),
 		);
 	}
 
@@ -94,6 +100,22 @@ class c2c_GetUserCustomWidget extends C2C_Widget_007 {
 				$ret = c2c_get_user_custom( $user_id, $field, $before, $after, $none, $between, $before_last );
 		} else {
 			$ret = c2c_get_current_user_custom( $field, $before, $after, $none, $between, $before_last );
+		}
+
+		// If either 'id' or 'class' attribute was defined, then wrap output in span
+		if ( ! empty( $body ) && ! ( empty( $id ) && empty( $class ) ) ) {
+			$tag = '<span';
+
+			if ( ! empty( $id ) ) {
+				$tag .= ' id="' . esc_attr( $id ) . '"';
+			}
+
+			if ( ! empty( $class ) ) {
+				$tag .= ' class="' . esc_attr( $class ) . '"';
+			}
+
+			$tag .= ">$body</span>";
+			$body = $tag;
 		}
 
 		return $ret;
