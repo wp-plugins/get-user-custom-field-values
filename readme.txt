@@ -1,20 +1,19 @@
 === Get User Custom Field Values ===
 Contributors: coffee2code
-Donate link: http://coffee2code.com/donate
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ARCFJ9TX3522
 Tags: user, custom field, user meta, widget, shortcode, coffee2code
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Requires at least: 2.6
-Tested up to: 3.5
-Stable tag: 2.7.1
-Version: 2.7.1
+Requires at least: 3.6
+Tested up to: 4.1
+Stable tag: 2.9
 
-Easily retrieve and control the display of any custom field values/meta data for the currently logged in user or any specified user.
+Use a widget, shortcode, and/or template tags to easily retrieve and display custom field values for the currently logged in (or any specific) user.
 
 
 == Description ==
 
-Easily retrieve and control the display of any custom field values/meta data for the currently logged in user or any specified user.
+This plugin provides a powerful widget, shortcode (with shortcode builder tool), and template tags for easily retrieving and displaying custom field values for the currently logged in user or any specified user.
 
 This plugin provides functionality similar to the [Get Custom Field Values](http://coffee2code.com/wp-plugins/get-custom-field-values/) plugin, but for user custom fields (which WordPress manages in a separate database table).
 
@@ -32,7 +31,7 @@ The list of useful user custom field values that are provided by default in Word
 
 It is up to other plugins or custom code to add additional user custom fields that you may then be able to retrieve with this plugin.
 
-Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/get-user-custom-field-values/) | [Plugin Directory Page](http://wordpress.org/extend/plugins/get-user-custom-field-values/) | [Author Homepage](http://coffee2code.com)
+Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/get-user-custom-field-values/) | [Plugin Directory Page](https://wordpress.org/plugins/get-user-custom-field-values/) | [Author Homepage](http://coffee2code.com)
 
 
 == Screenshots ==
@@ -43,7 +42,7 @@ Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/get-user-custom-field
 
 == Installation ==
 
-1. Unzip `get-user-custom.zip` inside the `/wp-content/plugins/` directory (or install via the built-in WordPress plugin installer)
+1. Unzip `get-user-custom-field-values.zip` inside the `/wp-content/plugins/` directory (or install via the built-in WordPress plugin installer)
 1. Activate the plugin through the 'Plugins' admin menu in WordPress
 1. (Optional) Add filters for 'the_user_meta' to filter user custom field data (see the end of the file for commented out samples you may wish to include).  And/or add per-meta filters by hooking 'the_user_meta_$field'
 1. Give a user a custom field with a value, or have user custom fields already defined.  (This generally entails use of plugin(s) that utilize the user custom fields feature built into WordPress. By default, in a practical sense WordPress only sets the 'first_name', 'last_name', and 'nickname' user custom fields, so you could try using one of them, even if just for testing even though WordPress provides functions to get those particular fields.)
@@ -65,6 +64,10 @@ The user profile page within WordPress provides inputs for a handful of user cus
 = I don't plan on using the shortcode builder when writing or editing a post or page, so how do I get rid of it? =
 
 When on the Write or Edit admin pages for a page or post, find the "Screen Options" link near the upper right-hand corner.  Clicking it slides down a panel of options.  In the "Show on screen" section, uncheck the checkbox labeled "Get User Custom Field Values - Shortcode".  This must be done separately for posts and for pages if you want the shortcode builder disabled for both sections.
+
+= Does this plugin include unit tests? =
+
+Yes.
 
 
 == Template Tags ==
@@ -224,13 +227,15 @@ The name of the shortcode can be changed via the filter 'c2c_get_user_custom_fie
 
 Attributes:
 
-* field : (string) The name of the user custom field key whose value you wish to have displayed.
-* this_post : (boolean) Get the custom field value for the author of the post containing this shortcode? Takes precedence over user_id attribute. Specify `1` (for true) or `0` for false. Default is `0`.
-* user_id : (integer) ID of user whose custom field's value you want to display. Leave blank to search for the custom field for the currently logged in user. Use `0` to indicate it should only work on the permalink page for a page/post.
-* before : (string) Text to display before the custom field.
-* after  : (string) Text to display after the custom field.
-* none : (string) Text to display if no matching custom field is found (or it has no value). Leave this blank if you don't want anything to display when no match is found.
-* between : (string) Text to display between custom field items if more than one are being shown. Default is ', '.
+* field       : (string) The name of the user custom field key whose value you wish to have displayed.
+* id          : (string) The text to use as the 'id' attribute for a 'span' tag that wraps the output
+* class       : (string) The text to use as the 'class' attribute for a 'span' tag that wraps the output
+* this_post   : (boolean) Get the custom field value for the author of the post containing this shortcode? Takes precedence over user_id attribute. Specify `1` (for true) or `0` for false. Default is `0`.
+* user_id     : (integer) ID of user whose custom field's value you want to display. Leave blank to search for the custom field for the currently logged in user. Use `0` to indicate it should only work on the permalink page for a page/post.
+* before      : (string) Text to display before the custom field.
+* after       : (string) Text to display after the custom field.
+* none        : (string) Text to display if no matching custom field is found (or it has no value). Leave this blank if you don't want anything to display when no match is found.
+* between     : (string) Text to display between custom field items if more than one are being shown. Default is ', '.
 * before_last : (string) Text to display between the second to last and last custom field items if more than one are being shown.
 
 Examples:
@@ -246,6 +251,41 @@ Examples:
 
 
 == Changelog ==
+
+= 2.9 (2015-03-04) =
+* Update widget framework to 009
+* Update widget to 008
+* Explicitly declare widget class methods public
+* Add more unit tests
+* Reformat plugin header
+* Minor code reformatting (spacing, bracing)
+* Change documentation links to wp.org to be https
+* Minor documentation improvements and spacing changes throughout
+* Note compatibility through WP 4.1+
+* Update copyright date (2015)
+* Add plugin icon
+* Regenerate .pot
+
+= 2.8 (2014-01-17) =
+* Hide shortcode wizard by default (won't change existing setting for users)
+* Show shortcode wizard for new posts as well
+* Add 'id' and 'class' as shortcode and widget attributes to set same-named HTML attributes on 'span' tag
+* Wrap output in 'span' tag if either 'id' or 'class' shortcode/widget attribute is defined
+* Add unit tests
+* Cast all intended integer arguments as absint() instead of intval()
+* Update widget version to 007
+* Update widget framework to 008
+* Use explicit path for require_once()
+* Discontinue use of PHP4-style constructor
+* Minor documentation improvements
+* Minor code reformatting (spacing, bracing)
+* Note compatibility through WP 3.8+
+* Drop compatibility with version of WP older than 3.6
+* Update copyright date (2014)
+* Regenerate .pot
+* Change donate link
+* Update screenshots
+* Add banner
 
 = 2.7.1 =
 * Change widget_body() to return widget content instead of echoing it, to fix widget display
@@ -325,6 +365,12 @@ Examples:
 
 
 == Upgrade Notice ==
+
+= 2.9 =
+Minor update: added more unit tests; updated widget framework to 009; noted compatibility through WP 4.1+; added plugin icon
+
+= 2.8 =
+Recommended update: added 'id' and 'class' to widget and shortcode; shortcode handling improvements; added unit tests; noted compatibility through WP 3.8+
 
 = 2.7.1 =
 Bug fix update: fix to properly output markup for widget
